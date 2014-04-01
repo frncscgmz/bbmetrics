@@ -1,5 +1,5 @@
 module BBmetric
-   class Application
+   class Cli
       attr_reader :options
 
       def initialize(argv)

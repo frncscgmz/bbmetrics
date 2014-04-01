@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
    s.description  = 'bbmetrics is a baseball data analysis tool with a Unixy flavor'
    s.authors      = ['Francisco Gomez']
    s.email        = 'mail@frncscgmz.me'
-   s.files        = ["lib/bbmetric.rb", "lib/bbmetric/application.rb", 
+   s.files        = ["lib/bbmetric.rb", "lib/bbmetric/cli.rb", 
                      "lib/bbmetric/statcalc.rb"]
    s.executables  = 'bbmetric'
    s.homepage     =
