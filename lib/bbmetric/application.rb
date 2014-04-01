@@ -26,11 +26,14 @@ module BBmetric
          opts = OptionParser.new 
          opts.on('-V', '--verbose') { @options.verbose = true }  
 
-         # Stat options
-         opts.on('-ba', '--battingaverage') { @options.ba = true }
+         # Offensive options
+         opts.on('-avg',  '--battingaverage') { @options.avg = true }
          opts.on('-obp', '--onbasepercentage') { @options.obp = true }
          opts.on('-slg', '--slugging') { @options.slg = true }
-         opts.on('-whip', '--walksplushits') { @options.whip = true }
+         opts.on('-babip', '--battingaverageonballs') { @options.babip = true }
+         # Pitching options
+         opts.on('-whip','--walksplushits') { @options.whip = true }
+         opts.on('-era', '--earnedrunsaverage') { @options.era = true }
 
          args = opts.parse(argv)
          
