@@ -15,7 +15,7 @@ module BBmetric
 
       def run
          if arguments_valid? 
-            @statcalc.calculate(@args)
+            puts @statcalc.calculate(@args)
          else
          end
       end
@@ -30,6 +30,7 @@ module BBmetric
          opts.on('-ba', '--battingaverage') { @options.ba = true }
          opts.on('-obp', '--onbasepercentage') { @options.obp = true }
          opts.on('-slg', '--slugging') { @options.slg = true }
+         opts.on('-whip', '--walksplushits') { @options.whip = true }
 
          args = opts.parse(argv)
          
