@@ -3,5 +3,5 @@
 require_relative "../lib/bbmetric"
 
 begin
-   BBmetric::Application.new(ARGV,STDIN).run
+   BBmetric::Application.new(ARGV).run
 end

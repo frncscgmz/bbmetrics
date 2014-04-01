@@ -2,37 +2,41 @@ module BBmetric
    class Application
       attr_reader :options
 
-      def initialize(arguments, stdin)
-         @arguments = arguments
-         @stdin = stdin
+      def initialize(argv)
 
-         # Defaults
+         # Set defaults
          @options = OpenStruct.new
-         @options.verbose = false 
+         @options.verbose = false
+
+         @options, @args = parse_options(argv)
+
+         @statcalc =  BBmetric::StatCalc.new(@options)
       end
 
       def run
-         if parsed_options? && arguments_valid? 
-            puts "Start at #{DateTime.now}"
+         if arguments_valid? 
+            puts "Valid arguments"
+            @statcalc.calculate(@args)
          else
          end
       end
 
       protected
 
-      def parsed_options?
+      def parse_options(argv)
          opts = OptionParser.new 
-         opts.on('-V', '--verbose')    { @options.verbose = true }  
-         # TO DO - add additional options
+         opts.on('-V', '--verbose') { @options.verbose = true }  
 
-         opts.parse!(@arguments) rescue return false
+         # Stat options
+         opts.on('-ba', '--battingaverage') { @options.ba = true }
 
-         #process_options
-         true      
+         args = opts.parse(argv)
+         
+         [@options, args]
       end
 
       def arguments_valid?
-         true if @arguments.length == 1 
+         true if @args.length > 1 
       end
 
    end
