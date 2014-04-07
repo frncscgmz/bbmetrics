@@ -39,6 +39,20 @@ module BBmetric
             (@options.hits.to_f - @options.hrs.to_f) / \
                (@options.atbats.to_f - @options.ks.to_f - \
                 @options.hrs.to_f + @options.sacfly.to_f)
+         elsif @options.pye
+            # Bill James Pythagorean expectation formula
+            # runs allowed ^ 1.83 / runs scored ^ 1.83
+            (@options.runsscored.to_f**1.83) / (@options.runsscored.to_f**1.83 + \
+               @options.runsallowed.to_f**1.83)
+         elsif @options.fp
+            # Fielding percentage
+            # putouts + assists / putouts
+            (@options.putouts.to_f + @options.assists.to_f) / (@options.putouts.to_f + \
+               @options.assists.to_f + @options.errors.to_f)
+         elsif @options.rf
+            # Range factor
+            # assists + putouts / games
+            (@options.assists.to_f + @options.putouts.to_f) / @options.games.to_f
          end
       end
    end

@@ -31,7 +31,9 @@ module BBmetric
 
          opts.on('-V', '--verbose') { @options.verbose = true }  
 
+         #
          # Offensive options
+         #
          opts.on('-avg <hits> <atbats>',  '--battingaverage <hits> <at-bats>', 
                  "Batting average") do |hits,atbats|
             @options.avg = true 
@@ -71,7 +73,10 @@ module BBmetric
             @options.ks       = argv[3]
             @options.sacfly   = argv[4]
          end
+
+         #
          # Pitching options
+         #
          opts.on('-whip <walks> <hits> <ip>',
                  '--walksplushits <walks> <hits> <ip>',
                  "Walks and hits per inning pitched") \
@@ -87,6 +92,38 @@ module BBmetric
             @options.era   = true 
             @options.runs  = argv[0] 
             @options.ip    = argv[1]  
+         end
+
+         #
+         # Fielding options
+         #
+         opts.on('-fp <putouts> <assists> <errors>',
+                 '--fieldingpercentage <putouts> <assists> <errors>') \
+         do |putouts, assists ,errors|
+            @options.fp       = true
+            @options.putouts  = argv[0] 
+            @options.assists  = argv[1] 
+            @options.errors   = argv[2] 
+         end
+         opts.on('-rf <assists> <putouts> <games>',
+                 '--rangefactor <assists> <putouts> <games>') \
+         do |putouts, assists ,errors|
+            @options.rf       = true
+            @options.assists  = argv[0] 
+            @options.putouts  = argv[1] 
+            @options.games    = argv[2] 
+         end
+
+         #
+         # Team options
+         #
+         opts.on('-pye <runsscored> <runsallowed>',
+                 '--pythagoreanexp <runsscored> <runsallowed>',
+                 'Bill James Pythagorean expectation formula') \
+         do |runsscored, runsallowed|
+            @options.pye         = true
+            @options.runsscored  = argv[0]
+            @options.runsallowed = argv[1]
          end
 
          opts.on_tail("-v", "--version", "Print version number") do
