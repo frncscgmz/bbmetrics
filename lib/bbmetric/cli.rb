@@ -30,17 +30,18 @@ module BBmetric
          opts.separator "\nOptions: "
 
          opts.on('-V', '--verbose') { @options.verbose = true }  
+         opts.on('-p', '--pretty') { @options.pretty_print = true }  
 
          #
          # Offensive options
          #
-         opts.on('-avg <hits> <atbats>',  '--battingaverage <hits> <at-bats>', 
+         opts.on('-A <hits> <atbats>',  '--battingaverage <hits> <at-bats>', 
                  "Batting average") do |hits,atbats|
             @options.avg = true 
             @options.hits = argv[0]
             @options.atbats = argv[1]
          end
-         opts.on('-obp <hits> <walks> <hbp> <atbats> <sacfly>',
+         opts.on('-O <hits> <walks> <hbp> <atbats> <sacfly>',
                  '--onbasepercentage  <hits> <walks> <hbp> <atbats> <sacfly>',
                  "On-Base Percentage") \
          do |hits, walks, hbp, atbats, sacfly|
@@ -51,7 +52,7 @@ module BBmetric
             @options.atbats = argv[3]
             @options.sacfly = argv[4]
          end
-         opts.on('-slg <hits> <doubles> <triples> <hrs> <atbats>', 
+         opts.on('-S <hits> <doubles> <triples> <hrs> <atbats>', 
                  '--slugging <hits> <doubles> <triples> <hrs> <atbats>',
                  "Slugging Percentage") \
          do |hits, doubles, triples, hrs, atbats|
@@ -62,7 +63,7 @@ module BBmetric
             @options.hrs      = argv[3]
             @options.atbats   = argv[4]
          end
-         opts.on('-babip <walks> <hrs> <atbats> <ks> <sacfly>', 
+         opts.on('-B <walks> <hrs> <atbats> <ks> <sacfly>', 
                  '--battingaverageonballs <walks> <hrs> <atbats> <ks> <sacfly>',
                  "Batting average on balls in play") \
          do |walks, hrs, atbats, ks, sacfly|
@@ -77,7 +78,7 @@ module BBmetric
          #
          # Pitching options
          #
-         opts.on('-whip <walks> <hits> <ip>',
+         opts.on('-W <walks> <hits> <ip>',
                  '--walksplushits <walks> <hits> <ip>',
                  "Walks and hits per inning pitched") \
          do |walks, hits, ip|
@@ -86,7 +87,7 @@ module BBmetric
             @options.hits  = argv[1]
             @options.ip    = argv[2]
          end
-         opts.on('-era <runs> <ip>', '--earnedrunsaverage <runs> <ip>',
+         opts.on('-E <runs> <ip>', '--earnedrunsaverage <runs> <ip>',
                  "Earned run average") \
          do |runs, ip|
             @options.era   = true 
@@ -97,7 +98,7 @@ module BBmetric
          #
          # Fielding options
          #
-         opts.on('-fp <putouts> <assists> <errors>',
+         opts.on('-F <putouts> <assists> <errors>',
                  '--fieldingpercentage <putouts> <assists> <errors>') \
          do |putouts, assists ,errors|
             @options.fp       = true
@@ -105,7 +106,7 @@ module BBmetric
             @options.assists  = argv[1] 
             @options.errors   = argv[2] 
          end
-         opts.on('-rf <assists> <putouts> <games>',
+         opts.on('-R <assists> <putouts> <games>',
                  '--rangefactor <assists> <putouts> <games>') \
          do |putouts, assists ,errors|
             @options.rf       = true
@@ -117,7 +118,7 @@ module BBmetric
          #
          # Team options
          #
-         opts.on('-pye <runsscored> <runsallowed>',
+         opts.on('-P <runsscored> <runsallowed>',
                  '--pythagoreanexp <runsscored> <runsallowed>',
                  'Bill James Pythagorean expectation formula') \
          do |runsscored, runsallowed|
