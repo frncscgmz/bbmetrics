@@ -1,8 +1,18 @@
 module BBmetric
    class Cli < Thor
-      map "-ba" => :battingaverage
-      map "-obp" => :onbasepercentage
+      map "-ba"      => :battingaverage
+      map "-obp"     => :onbasepercentage
+      map "-slg"     => :slugging
+      map "-babip"   => :babip
+      map "-era"     => :earnedrunaverage
+      map "-whip"    => :walksplushits
+      map "-fp"      => :fieldingpercentage
+      map "-rf"      => :rangefactor
+      map "-pye"     => :pythagoreanexpectationformula
       
+      #
+      # Offensive options
+      #
       # Batting average
       # hits / at-bats
       desc "battingaverage <hits> <at-bats>", "Batting Average hits / at-bats"
@@ -18,6 +28,82 @@ module BBmetric
       def onbasepercentage(hits, walks, hbp, atbats, sacfly)
          puts (hits.to_f + walks.to_f + hbp.to_f) / \
             (atbats.to_f + walks.to_f + hbp.to_f + sacfly.to_f)
+      end
+
+      # Slugging percentage
+      # hits + 2*doubles + 3*triples + 4*HR's / at-bats
+      desc "slugging <hits> <doubles> <triples> <hrs> <atbats>",
+         "Slugging Percentage"
+      def slugging(hits, doubles, triples, hrs, atbats)
+         puts (hits.to_f + 2*(doubles.to_f) + \
+            3*(triples.to_f) + 4*(hrs.to_f)) / \
+            atbats.to_f
+      end
+
+      # Batting average on balls in play
+      # hits - HR's / at-bats - strikeouts - HR's + sacrifice flies
+      desc "babip <walks> <hrs> <atbats> <ks> <sacfly>",
+         "Batting average on balls in play"
+      def babip(walks, hrs, atbats, ks, sacfly)
+         puts (hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - \
+            hrs.to_f + sacfly.to_f)
+      end
+
+      #
+      # Pitching options
+      #
+      # Earned run average
+      # 9 * earned runs allowed / innings pitched
+      desc "earnedrunaverage <runs> <ip>",
+         "Earned run average"
+      def earnedrunaverage(runs, ip)
+         puts 9*(runs.to_f / ip.to_f)
+      end
+
+      # Walks plus hits per inning pitched 
+      # walks + hits / innings pitched
+      desc "walksplushits <walks> <hits> <ip>",
+         "Walks and hits per inning pitched"
+      def walksplushits(walks, hits, ip)
+         puts (walks.to_f + hits.to_f) / ip.to_f
+      end
+
+      #def fieldingindependentpitching(hrs,walks,ks,ip)
+      #end
+
+      #def defenseindependentcomponentera(hrs,walks,hbp,ks,ip)
+      #end
+
+      #
+      # Fielding options
+      #
+      # Fielding percentage
+      # putouts + assists / putouts
+      desc "fieldingpercentage <putouts> <assists> <errors>",
+         "Fielding percentage"
+      def fieldingpercentage(putouts, assists ,errors)
+         puts (putouts.to_f + assists.to_f) / (putouts.to_f + \
+            assists.to_f + errors.to_f)
+      end
+
+      # Range factor
+      # assists + putouts / games
+      desc "rangefactor <assists> <putouts> <games>",
+         "Range factor"
+      def rangefactor(putouts, assists ,games)
+            puts (assists.to_f + putouts.to_f) / games.to_f
+      end
+
+      #
+      # Team options
+      #
+      # Bill James Pythagorean expectation formula
+      # runs allowed ^ 1.83 / runs scored ^ 1.83
+      desc "pythagoreanexpectationformula <runsscored> <runsallowed>",
+         "Bill James Pythagorean expectation formula"
+      def pythagoreanexpectationformula(runsscored, runsallowed)
+         puts (runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
+            runsallowed.to_f**1.83)
       end
 
 =begin
