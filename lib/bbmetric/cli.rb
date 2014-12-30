@@ -35,7 +35,7 @@ module BBmetric
 
       def run
          if arguments_valid? 
-            puts @statcalc.calculate(@args)
+            puts '%.3f' % @statcalc.calculate(@args)
          else
          end
       end
