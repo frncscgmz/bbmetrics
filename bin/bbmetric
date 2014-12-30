@@ -3,7 +3,8 @@
 require_relative "../lib/bbmetric"
 
 begin
-   BBmetric::Cli.new(ARGV).run
+   #BBmetric::Cli.new(ARGV).run
+   BBmetric::Cli.start(ARGV)
 rescue Errno::ENOENT => err
   abort "bbmetric: #{err.message}"
 rescue OptionParser::InvalidOption => err

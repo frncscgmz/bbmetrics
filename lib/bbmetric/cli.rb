@@ -1,7 +1,26 @@
 module BBmetric
-   class Cli
-      attr_reader :options
+   class Cli < Thor
+      map "-ba" => :battingaverage
+      map "-obp" => :onbasepercentage
+      
+      # Batting average
+      # hits / at-bats
+      desc "battingaverage <hits> <at-bats>", "Batting Average hits / at-bats"
+      def battingaverage(hits,atbats)
+         puts hits.to_f / atbats.to_f
+      end
 
+      # On-Base percentage
+      # (hits + walks + hit by pitch) / 
+      # (at-bats + walks + hit by pitch + sacrifice flies)
+      desc "onbasepercentage <hits> <walks> <hbp> <atbats> <sacfly>",
+         "On-Base percentage"
+      def onbasepercentage(hits, walks, hbp, atbats, sacfly)
+         puts (hits.to_f + walks.to_f + hbp.to_f) / \
+            (atbats.to_f + walks.to_f + hbp.to_f + sacfly.to_f)
+      end
+
+=begin
       def initialize(argv)
 
          # Set defaults
@@ -20,12 +39,14 @@ module BBmetric
          else
          end
       end
+=end
 
+=begin
       protected
 
       def parse_options(argv)
          OptionParser.new{ |opts|
-         
+
          opts.banner =  "Usage:\n    bbmetric [options] <arguments>"
          opts.separator "\nOptions: "
 
@@ -35,7 +56,7 @@ module BBmetric
          #
          # Offensive options
          #
-         opts.on('-A <hits> <atbats>',  '--battingaverage <hits> <at-bats>', 
+         opts.on('--BA <hits> <atbats>', Array,
                  "Batting average") do |hits,atbats|
             @options.avg = true 
             @options.hits = argv[0]
@@ -64,7 +85,7 @@ module BBmetric
             @options.atbats   = argv[4]
          end
          opts.on('-B <walks> <hrs> <atbats> <ks> <sacfly>', 
-                 '--battingaverageonballs <walks> <hrs> <atbats> <ks> <sacfly>',
+                 '--babip <walks> <hrs> <atbats> <ks> <sacfly>',
                  "Batting average on balls in play") \
          do |walks, hrs, atbats, ks, sacfly|
             @options.babip = true
@@ -93,6 +114,27 @@ module BBmetric
             @options.era   = true 
             @options.runs  = argv[0] 
             @options.ip    = argv[1]  
+         end
+         opts.on('-D <hrs> <walks> <hbp> <ks> <ip>',
+                 '--dice <hrs> <walks> <hbp> <ks> <ip>',
+                 "Defense-Independent Component ERA (DICE)") \
+         do |hrs,walks,hbp,ks,ip|
+            @options.dice  = true
+            @options.hrs   = argv[0]
+            @options.walks = argv[1]
+            @options.hbp   = argv[2]
+            @options.ks    = argv[3]
+            @options.ip    = argv[4]
+         end
+         opts.on('-F <hrs> <walks> <ks> <ip>',
+                 '--fip <hrs> <walks> <ks> <ip>',
+                 "Fielding Independent Pitching") \
+         do |hrs,walks,ks,ip|
+            @options.fip   = true
+            @options.hrs   = argv[0]
+            @options.walks = argv[1]
+            @options.ks    = argv[2]
+            @options.ip    = argv[3]
          end
 
          #
@@ -143,10 +185,13 @@ module BBmetric
 
          [@options, argv]
       end
+=end
 
+=begin
       def arguments_valid?
          true if @args.length > 1 
       end
+=end
 
    end
 end
