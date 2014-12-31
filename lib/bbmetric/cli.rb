@@ -23,7 +23,7 @@ module BBmetric
       # Batting average
       # hits / at-bats
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "battingaverage <hits> <at-bats>",
+      desc "battingaverage -ba <hits> <at-bats>",
          "Batting Average hits / at-bats"
       def battingaverage(hits,atbats)
          puts (hits.to_f / atbats.to_f).round(options[:precision]) if options[:precision]
@@ -33,7 +33,7 @@ module BBmetric
       # (hits + walks + hit by pitch) / 
       # (at-bats + walks + hit by pitch + sacrifice flies)
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "onbasepercentage <hits> <walks> <hbp> <atbats> <sacfly>",
+      desc "onbasepercentage -obp <hits> <walks> <hbp> <atbats> <sacfly>",
          "On-Base percentage"
       def onbasepercentage(hits, walks, hbp, atbats, sacfly)
          puts ((hits.to_f + walks.to_f + hbp.to_f) / \
@@ -44,7 +44,7 @@ module BBmetric
       # Slugging percentage
       # hits + 2*doubles + 3*triples + 4*HR's / at-bats
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "slugging <hits> <doubles> <triples> <hrs> <atbats>",
+      desc "slugging -slg <hits> <doubles> <triples> <hrs> <atbats>",
          "Slugging Percentage"
       def slugging(hits, doubles, triples, hrs, atbats)
          puts ((hits.to_f + 2*(doubles.to_f) + \
@@ -55,7 +55,7 @@ module BBmetric
       # Batting average on balls in play
       # hits - HR's / at-bats - strikeouts - HR's + sacrifice flies
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "babip <hits> <walks> <hrs> <atbats> <ks> <sacfly>",
+      desc "babip -babip <hits> <walks> <hrs> <atbats> <ks> <sacfly>",
          "Batting average on balls in play"
       def babip(hits, walks, hrs, atbats, ks, sacfly)
          puts ((hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - \
@@ -69,7 +69,7 @@ module BBmetric
       # Earned run average
       # 9 * earned runs allowed / innings pitched
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "earnedrunaverage <runs> <ip>",
+      desc "earnedrunaverage -era <runs> <ip>",
          "Earned run average"
       def earnedrunaverage(runs, ip)
          puts (9*(runs.to_f / ip.to_f))
@@ -79,7 +79,7 @@ module BBmetric
       # Walks plus hits per inning pitched 
       # walks + hits / innings pitched
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "walksplushits <walks> <hits> <ip>",
+      desc "walksplushits -whip <walks> <hits> <ip>",
          "Walks and hits per inning pitched"
       def walksplushits(walks, hits, ip)
          puts ((walks.to_f + hits.to_f) / ip.to_f)
@@ -98,7 +98,7 @@ module BBmetric
       # Fielding percentage
       # putouts + assists / putouts
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "fieldingpercentage <putouts> <assists> <errors>",
+      desc "fieldingpercentage -fp <putouts> <assists> <errors>",
          "Fielding percentage"
       def fieldingpercentage(putouts, assists ,errors)
          puts ((putouts.to_f + assists.to_f) / (putouts.to_f + \
@@ -109,7 +109,7 @@ module BBmetric
       # Range factor
       # assists + putouts / games
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "rangefactor <assists> <putouts> <games>",
+      desc "rangefactor -rf <assists> <putouts> <games>",
          "Range factor"
       def rangefactor(putouts, assists ,games)
             puts ((assists.to_f + putouts.to_f) / games.to_f)
@@ -122,7 +122,7 @@ module BBmetric
       # Bill James Pythagorean expectation formula
       # runs allowed ^ 1.83 / runs scored ^ 1.83
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "pythagoreanexpectationformula <runsscored> <runsallowed>",
+      desc "pythagoreanexpectationformula -pye <runsscored> <runsallowed>",
          "Bill James Pythagorean expectation formula"
       def pythagoreanexpectationformula(runsscored, runsallowed)
          puts ((runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
