@@ -26,7 +26,13 @@ module BBmetric
       desc "battingaverage -ba <hits> <at-bats>",
          "Batting Average hits / at-bats"
       def battingaverage(hits,atbats)
-         puts (hits.to_f / atbats.to_f).round(options[:precision]) if options[:precision]
+         puts "Calculating batting average" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "Hits: #{hits} At-Bats: #{atbats}" if options[:verbose]
+         puts "#{hits} / #{atbats}" if options[:verbose]
+         puts (hits.to_f / atbats.to_f).round(options[:precision]) \
+            if options[:precision]
       end
 
       # On-Base percentage
