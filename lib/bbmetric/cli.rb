@@ -9,6 +9,8 @@ module BBmetric
       map "-fp"      => :fieldingpercentage
       map "-rf"      => :rangefactor
       map "-pye"     => :pythagoreanexpectationformula
+
+      map "-v"       => :version
       
       #
       # Offensive options
@@ -104,6 +106,16 @@ module BBmetric
       def pythagoreanexpectationformula(runsscored, runsallowed)
          puts (runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
             runsallowed.to_f**1.83)
+      end
+
+      #
+      # Misc options
+      #
+      desc "-v","Print version number."
+      def version
+         require "rubygems"
+         spec = Gem::Specification::load("../bbmetric.gemspec")
+         puts "bbmetric #{spec.version}\n"
       end
 
 =begin
