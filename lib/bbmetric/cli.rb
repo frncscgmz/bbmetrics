@@ -42,6 +42,13 @@ module BBmetric
       desc "onbasepercentage -obp <hits> <walks> <hbp> <atbats> <sacfly>",
          "On-Base percentage"
       def onbasepercentage(hits, walks, hbp, atbats, sacfly)
+         puts "Calculating On-Base percentage" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "Hits: #{hits} Walks: #{walks} Hit By Pitches: #{hbp} At-Bats: #{\
+            atbats} Sacrifice Flies: #{sacfly}" if options[:verbose]
+         puts "(#{hits} + #{walks} + #{hbp}) / (#{atbats} + #{\
+            walks} + #{hbp} + #{sacfly})" if options[:verbose]
          puts ((hits.to_f + walks.to_f + hbp.to_f) / \
                (atbats.to_f + walks.to_f + hbp.to_f + sacfly.to_f))
                   .round(options[:precision]) if options[:precision]
@@ -51,8 +58,13 @@ module BBmetric
       # hits + 2*doubles + 3*triples + 4*HR's / at-bats
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
       desc "slugging -slg <hits> <doubles> <triples> <hrs> <atbats>",
-         "Slugging Percentage"
+         "Slugging percentage"
       def slugging(hits, doubles, triples, hrs, atbats)
+         puts "Calculating Slugging percentage" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "#{hits} + 2*(#{doubles}) + 3*(#{triples}) + 4*(#{hrs}) / #{atbats}" \
+            if options[:verbose]
          puts ((hits.to_f + 2*(doubles.to_f) + \
             3*(triples.to_f) + 4*(hrs.to_f)) / \
             atbats.to_f).round(options[:precision]) if options[:precision]
@@ -64,6 +76,11 @@ module BBmetric
       desc "babip -babip <hits> <walks> <hrs> <atbats> <ks> <sacfly>",
          "Batting average on balls in play"
       def babip(hits, walks, hrs, atbats, ks, sacfly)
+         puts "Calculating BABIP" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{hits} - #{hrs}) / (#{atbats} - #{ks} - #{hrs} + #{sacfly})" \
+            if options[:verbose]
          puts ((hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - \
             hrs.to_f + sacfly.to_f))
             .round(options[:precision]) if options[:precision]
