@@ -95,6 +95,10 @@ module BBmetric
       desc "earnedrunaverage -era <runs> <ip>",
          "Earned run average"
       def earnedrunaverage(runs, ip)
+         puts "Calculating ERA" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "9*(#{runs} / #{ip})" if options[:verbose]
          puts (9*(runs.to_f / ip.to_f))
             .round(options[:precision]) if options[:precision]
       end
@@ -105,6 +109,10 @@ module BBmetric
       desc "walksplushits -whip <walks> <hits> <ip>",
          "Walks and hits per inning pitched"
       def walksplushits(walks, hits, ip)
+         puts "Calculating WHIP" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{walks} + #{hits}) / #{ip}" if options[:verbose]
          puts ((walks.to_f + hits.to_f) / ip.to_f)
             .round(options[:precision]) if options[:precision]
       end
@@ -124,6 +132,11 @@ module BBmetric
       desc "fieldingpercentage -fp <putouts> <assists> <errors>",
          "Fielding percentage"
       def fieldingpercentage(putouts, assists ,errors)
+         puts "Calculating Fielding percentage" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{putouts} + #{assists}) / (#{putouts} + #{\
+            assists} + #{errors})" if options[:verbose]
          puts ((putouts.to_f + assists.to_f) / (putouts.to_f + \
             assists.to_f + errors.to_f))
             .round(options[:precision]) if options[:precision]
@@ -135,8 +148,12 @@ module BBmetric
       desc "rangefactor -rf <assists> <putouts> <games>",
          "Range factor"
       def rangefactor(putouts, assists ,games)
-            puts ((assists.to_f + putouts.to_f) / games.to_f)
-               .round(options[:precision]) if options[:precision]
+         puts "Calculating Range factor" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{assists} + #{putouts}) / #{games}" if options[:verbose]
+         puts ((assists.to_f + putouts.to_f) / games.to_f)
+            .round(options[:precision]) if options[:precision]
       end
 
       #
@@ -148,6 +165,11 @@ module BBmetric
       desc "pythagoreanexpectationformula -pye <runsscored> <runsallowed>",
          "Bill James Pythagorean expectation formula"
       def pythagoreanexpectationformula(runsscored, runsallowed)
+         puts "Calculating Bill James Pythagorean expectation" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{runsscored}^1.83) / (#{runsscored}^1.83 + #{\
+            runsallowed}^1.83)" if options[:verbose]
          puts ((runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
             runsallowed.to_f**1.83))
             .round(options[:precision]) if options[:precision]
