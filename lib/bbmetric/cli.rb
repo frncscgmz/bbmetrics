@@ -7,9 +7,11 @@ module BBmetric
       # Main function aliases
       map "-ba"      => :battingaverage
       map "-obp"     => :onbasepercentage
+      map "-ops"     => :onbasepercentageslugging
       map "-slg"     => :slugging
       map "-babip"   => :babip
       map "-era"     => :earnedrunaverage
+      map "-eraplus" => :earnedrunaverageplus
       map "-whip"    => :walksplushits
       map "-fp"      => :fieldingpercentage
       map "-rf"      => :rangefactor
@@ -70,6 +72,26 @@ module BBmetric
             atbats.to_f).round(options[:precision]) if options[:precision]
       end
 
+      # On-Base percentage plus slugging
+      # (atbats * (hits + walks + hbp) + bases * (atbats + walks + sacfly + 
+      # hbp)) / (atbats * (atbats + walks + sacfly + hbp))
+      option :precision, :type => :numeric, :default => 3, :aliases => '--p'
+      desc "onbasepercentageslugging -slg <hits> <doubles> <triples> <hrs> <atbats>",
+         "On-Base percentage plus Slugging"
+      def onbasepercentageslugging(atbats, hits, walks, hbp, bases, sacfly)
+         puts "Calculating On-Base percentage plus Slugging" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{atbats} * (#{hits} + #{walks} + #{hbp}) + #{\
+            bases} * (#{atbats} + #{walks} + #{sacfly} + #{\
+            hbp})) / (#{atbats} * (#{atbats} + #{walks} + #{sacfly} + #{hbp}))"\
+            if options[:verbose]
+         puts ((atbats.to_f * (hits.to_f + walks.to_f + hbp.to_f)+bases.to_f*\
+            (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f))/ \
+            (atbats.to_f * (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f)))\
+            .round(options[:precision]) if options[:precision]
+      end
+
       # Batting average on balls in play
       # hits - HR's / at-bats - strikeouts - HR's + sacrifice flies
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
@@ -100,6 +122,21 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "9*(#{runs} / #{ip})" if options[:verbose]
          puts (9*(runs.to_f / ip.to_f))
+            .round(options[:precision]) if options[:precision]
+      end
+
+      # Earned run average adjusted to player's ballpark(s)
+      # 9 * earned runs allowed / innings pitched
+      option :precision, :type => :numeric, :default => 3, :aliases => '--p'
+      desc "earnedrunaverageplus -eraplus <runs> <ip> <lgera>",
+         "Earned run average adjusted to player's ballpark(s)"
+      def earnedrunaverageplus(runs, ip, lgera)
+         puts "Calculating ERA+" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "100 * (#{lgera}/(9 * (#{runs} / #{ip})))" \
+            if options[:verbose]
+         puts (100*(lgera.to_f/(9*(runs.to_f / ip.to_f))))  
             .round(options[:precision]) if options[:precision]
       end
 
