@@ -11,5 +11,7 @@ Gem::Specification.new do |s|
    s.executables  = 'bbmetric'
    s.homepage     =
       'https://github.com/frncscgmz/bbmetrics'
-   s.license      = 'Apache-2.0'
+   s.license      = 'MIT'
+
+   s.add_dependency('thor')
 end
