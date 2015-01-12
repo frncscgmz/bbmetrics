@@ -33,8 +33,8 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "Hits: #{hits} At-Bats: #{atbats}" if options[:verbose]
          puts "#{hits} / #{atbats}" if options[:verbose]
-         puts (hits.to_f / atbats.to_f).round(options[:precision]) \
-            if options[:precision]
+         puts (BBmetric::StatCalc.battingaverage(hits,atbats))\
+            .round(options[:precision]) if options[:precision]
       end
 
       # On-Base percentage
@@ -51,9 +51,8 @@ module BBmetric
             atbats} Sacrifice Flies: #{sacfly}" if options[:verbose]
          puts "(#{hits} + #{walks} + #{hbp}) / (#{atbats} + #{\
             walks} + #{hbp} + #{sacfly})" if options[:verbose]
-         puts ((hits.to_f + walks.to_f + hbp.to_f) / \
-               (atbats.to_f + walks.to_f + hbp.to_f + sacfly.to_f))
-                  .round(options[:precision]) if options[:precision]
+         puts (BBmetric::StatCalc.onbasepercentage(hits,walks,hbp,atbats,sacfly))\
+            .round(options[:precision]) if options[:precision]
       end
 
       # Slugging percentage
@@ -67,9 +66,8 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "#{hits} + 2*(#{doubles}) + 3*(#{triples}) + 4*(#{hrs}) / #{atbats}" \
             if options[:verbose]
-         puts ((hits.to_f + 2*(doubles.to_f) + \
-            3*(triples.to_f) + 4*(hrs.to_f)) / \
-            atbats.to_f).round(options[:precision]) if options[:precision]
+         puts (BBmetric::StatCalc.slugging(hits,doubles,triples,hrs,atbats))\
+            .round(options[:precision]) if options[:precision]
       end
 
       # On-Base percentage plus slugging
@@ -86,9 +84,8 @@ module BBmetric
             bases} * (#{atbats} + #{walks} + #{sacfly} + #{\
             hbp})) / (#{atbats} * (#{atbats} + #{walks} + #{sacfly} + #{hbp}))"\
             if options[:verbose]
-         puts ((atbats.to_f * (hits.to_f + walks.to_f + hbp.to_f)+bases.to_f*\
-            (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f))/ \
-            (atbats.to_f * (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f)))\
+         puts (BBmetric::StatCalc.onbasepercentageslugging(\
+            atbats,hits,walks,hbp,bases,sacfly))\
             .round(options[:precision]) if options[:precision]
       end
 
@@ -103,8 +100,7 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "(#{hits} - #{hrs}) / (#{atbats} - #{ks} - #{hrs} + #{sacfly})" \
             if options[:verbose]
-         puts ((hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - \
-            hrs.to_f + sacfly.to_f))
+         puts (BBmetric::StatCalc.babip(hits,walks,hrs,atbats,ks,sacfly))
             .round(options[:precision]) if options[:precision]
       end
 
@@ -121,7 +117,7 @@ module BBmetric
          puts "Precision: #{options[:precision]}" \
             if options[:verbose] and options[:precision]
          puts "9*(#{runs} / #{ip})" if options[:verbose]
-         puts (9*(runs.to_f / ip.to_f))
+         puts (BBmetric::StatCalc.earnedrunaverage(runs,ip))
             .round(options[:precision]) if options[:precision]
       end
 
@@ -136,7 +132,7 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "100 * (#{lgera}/(9 * (#{runs} / #{ip})))" \
             if options[:verbose]
-         puts (100*(lgera.to_f/(9*(runs.to_f / ip.to_f))))  
+         puts (BBmetric::StatCalc.earnedrunaverageplus(runs,ip,lgera))  
             .round(options[:precision]) if options[:precision]
       end
 
@@ -150,7 +146,7 @@ module BBmetric
          puts "Precision: #{options[:precision]}" \
             if options[:verbose] and options[:precision]
          puts "(#{walks} + #{hits}) / #{ip}" if options[:verbose]
-         puts ((walks.to_f + hits.to_f) / ip.to_f)
+         puts (BBmetric::StatCalc.walksplushits(walks,hits,ip))
             .round(options[:precision]) if options[:precision]
       end
 
@@ -174,8 +170,7 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "(#{putouts} + #{assists}) / (#{putouts} + #{\
             assists} + #{errors})" if options[:verbose]
-         puts ((putouts.to_f + assists.to_f) / (putouts.to_f + \
-            assists.to_f + errors.to_f))
+         puts (BBmetric::StatCalc.fieldingpercentage(putouts,assists,errors))
             .round(options[:precision]) if options[:precision]
       end
 
@@ -189,7 +184,7 @@ module BBmetric
          puts "Precision: #{options[:precision]}" \
             if options[:verbose] and options[:precision]
          puts "(#{assists} + #{putouts}) / #{games}" if options[:verbose]
-         puts ((assists.to_f + putouts.to_f) / games.to_f)
+         puts (BBmetric::StatCalc.rangefactor(putouts,assists,games))
             .round(options[:precision]) if options[:precision]
       end
 
@@ -207,8 +202,8 @@ module BBmetric
             if options[:verbose] and options[:precision]
          puts "(#{runsscored}^1.83) / (#{runsscored}^1.83 + #{\
             runsallowed}^1.83)" if options[:verbose]
-         puts ((runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
-            runsallowed.to_f**1.83))
+         puts (BBmetric::StatCalc.pythagoreanexpectationformula(\
+            runsscored, runsallowed))
             .round(options[:precision]) if options[:precision]
       end
 

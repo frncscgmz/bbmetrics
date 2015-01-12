@@ -1,59 +1,54 @@
 module BBmetric
-   require 'ostruct'
-
    class StatCalc
 
-      def initialize(options)
-         @options = options
+      def self.battingaverage(hits,atbats)
+         hits.to_f / atbats.to_f
       end
 
-      def calculate(data)
-         if @options.avg
-            # Batting average
-            # hits / at-bats
-            @options.hits.to_f / @options.atbats.to_f
-         elsif @options.obp
-            # On-Base percentage
-            # (hits + walks + hit by pitch) / 
-            # (at-bats + walks + hit by pitch + sacrifice flies)
-            (@options.hits.to_f + @options.walks.to_f + @options.hbp.to_f) / \
-               (@options.atbats.to_f + @options.walks.to_f + @options.hbp.to_f \
-                + @options.sacfly.to_f)
-         elsif @options.slg
-            # Slugging percentage
-            # hits + 2*doubles + 3*triples + 4*HR's / at-bats
-            (@options.hits.to_f + 2*(@options.doubles.to_f) + \
-             3*(@options.triples.to_f) + 4*(@options.hrs.to_f)) / \
-             @options.atbats.to_f
-         elsif @options.whip
-            # Walks plus hits per inning pitched 
-            # walks + hits / innings pitched
-            (@options.walks.to_f + @options.hits.to_f) / @options.ip.to_f
-         elsif @options.era
-            # Earned run average
-            # 9 * earned runs allowed / innings pitched
-            9*(@options.runs.to_f / @options.ip.to_f)
-         elsif @options.babip
-            # Batting average on balls in play
-            # hits - HR's / at-bats - strikeouts - HR's + sacrifice flies
-            (@options.hits.to_f - @options.hrs.to_f) / \
-               (@options.atbats.to_f - @options.ks.to_f - \
-                @options.hrs.to_f + @options.sacfly.to_f)
-         elsif @options.pye
-            # Bill James Pythagorean expectation formula
-            # runs allowed ^ 1.83 / runs scored ^ 1.83
-            (@options.runsscored.to_f**1.83) / (@options.runsscored.to_f**1.83 + \
-               @options.runsallowed.to_f**1.83)
-         elsif @options.fp
-            # Fielding percentage
-            # putouts + assists / putouts
-            (@options.putouts.to_f + @options.assists.to_f) / (@options.putouts.to_f + \
-               @options.assists.to_f + @options.errors.to_f)
-         elsif @options.rf
-            # Range factor
-            # assists + putouts / games
-            (@options.assists.to_f + @options.putouts.to_f) / @options.games.to_f
-         end
+      def self.onbasepercentage(hits, walks, hbp, atbats, sacfly)
+         (hits.to_f + walks.to_f + hbp.to_f) / \
+            (atbats.to_f + walks.to_f + hbp.to_f + sacfly.to_f)
+      end
+
+      def self.slugging(hits, doubles, triples, hrs, atbats)
+         (hits.to_f + 2*(doubles.to_f) + 3*(triples.to_f) + 4*(hrs.to_f)) / \
+            atbats.to_f
+      end
+
+      def self.onbasepercentageslugging(atbats, hits, walks, hbp, bases, sacfly)
+         (atbats.to_f * (hits.to_f + walks.to_f + hbp.to_f)+bases.to_f*\
+            (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f))/\
+            (atbats.to_f * (atbats.to_f + walks.to_f + sacfly.to_f + hbp.to_f))
+      end
+
+      def self.babip(hits, walks, hrs, atbats, ks, sacfly)
+         (hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - hrs.to_f + sacfly.to_f)
+      end
+
+      def self.earnedrunaverage(runs, ip)
+         9*(runs.to_f / ip.to_f)
+      end
+
+      def self.earnedrunaverageplus(runs, ip, lgera)
+         100*(lgera.to_f/(9*(runs.to_f / ip.to_f)))
+      end
+
+      def self.walksplushits(walks, hits, ip)
+         (walks.to_f + hits.to_f) / ip.to_f
+      end
+
+      def self.fieldingpercentage(putouts, assists ,errors)
+         (putouts.to_f + assists.to_f) / (putouts.to_f + \
+            assists.to_f + errors.to_f)
+      end
+
+      def self.rangefactor(putouts, assists ,games)
+         (assists.to_f + putouts.to_f) / games.to_f
+      end
+
+      def self.pythagoreanexpectationformula(runsscored, runsallowed)
+         (runsscored.to_f**1.83) / (runsscored.to_f**1.83 + \
+            runsallowed.to_f**1.83)
       end
    end
 end
