@@ -1,5 +1,3 @@
-require "optparse"
-require "ostruct"
 require "thor"
 
 require_relative "bbmetric/cli"
