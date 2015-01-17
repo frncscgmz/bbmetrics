@@ -14,5 +14,6 @@ Gem::Specification.new do |s|
    s.license      = 'MIT'
 
    s.add_dependency('thor')
+   s.add_dependency('colorize')
    s.add_development_dependency("rspec")
 end

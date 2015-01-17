@@ -2,7 +2,7 @@ module BBmetric
    class Cli < Thor
       # Class-wide options
       class_option :verbose, :type => :boolean
-      class_option :pretty,  :type => :boolean
+      class_option :color,   :type => :boolean
 
       # Main function aliases
       map "-ba"      => :battingaverage
@@ -18,7 +18,7 @@ module BBmetric
       map "-pye"     => :pythagoreanexpectationformula
 
       map "-v"       => :version
-      
+
       #
       # Offensive options
       #
@@ -28,7 +28,8 @@ module BBmetric
       desc "battingaverage -ba <hits> <at-bats>",
          "Batting Average hits / at-bats"
       def battingaverage(hits,atbats)
-         puts "Calculating batting average" if options[:verbose]
+         #puts "Calculating batting average" if options[:verbose]
+         print_colorized("Calculating batting average",:red) if options[:verbose]
          puts "Precision: #{options[:precision]}" \
             if options[:verbose] and options[:precision]
          puts "Hits: #{hits} At-Bats: #{atbats}" if options[:verbose]
@@ -215,6 +216,13 @@ module BBmetric
          require "rubygems"
          spec = Gem::Specification::load("../bbmetric.gemspec")
          puts "bbmetric #{spec.version}\n"
+      end
+
+      # Method for printing with color
+      no_tasks do
+         def print_colorized(message,color)
+            puts options[:color] ? "#{message}".colorize(color) : "#{message}"
+         end
       end
 
    end
