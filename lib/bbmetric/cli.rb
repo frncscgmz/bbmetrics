@@ -28,12 +28,15 @@ module BBmetric
       desc "battingaverage -ba <hits> <at-bats>",
          "Batting Average hits / at-bats"
       def battingaverage(hits,atbats)
-         #puts "Calculating batting average" if options[:verbose]
-         print_colorized("Calculating batting average",:red) if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("batting average",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "Hits: #{hits} At-Bats: #{atbats}" if options[:verbose]
-         puts "#{hits} / #{atbats}" if options[:verbose]
+         puts "Hits: #{colorize_string("#{hits}",:green)} At-Bats: #{\
+            colorize_string("#{atbats}",:red)}" if options[:verbose]
+
+         puts "#{colorize_string("#{hits}",:green)} / #{colorize_string(\
+            "#{atbats}",:red)}" if options[:verbose]
          puts (BBmetric::StatCalc.battingaverage(hits,atbats))\
             .round(options[:precision]) if options[:precision]
       end
@@ -45,13 +48,21 @@ module BBmetric
       desc "onbasepercentage -obp <hits> <walks> <hbp> <atbats> <sacfly>",
          "On-Base percentage"
       def onbasepercentage(hits, walks, hbp, atbats, sacfly)
-         puts "Calculating On-Base percentage" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("On-Base percentage",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "Hits: #{hits} Walks: #{walks} Hit By Pitches: #{hbp} At-Bats: #{\
-            atbats} Sacrifice Flies: #{sacfly}" if options[:verbose]
-         puts "(#{hits} + #{walks} + #{hbp}) / (#{atbats} + #{\
-            walks} + #{hbp} + #{sacfly})" if options[:verbose]
+         puts "Hits: #{colorize_string("#{hits}",:green)} Walks: #{
+            colorize_string("#{walks}",:red)} Hit By Pitches: #{
+            colorize_string("#{hbp}",:magenta)} At-Bats: #{
+            colorize_string("#{atbats}",:cyan)} Sacrifice Flies: #{
+            colorize_string("#{sacfly}",:light_yellow)}" if options[:verbose]
+
+         puts "(#{colorize_string("#{hits}",:green)} + #{colorize_string("#{
+            walks}",:red)} + #{colorize_string("#{hbp}",:magenta)}) / (#{
+            colorize_string("#{atbats}",:cyan)} + #{colorize_string("#{
+            walks}",:red)} + #{colorize_string("#{hbp}",:magenta)} + #{
+            colorize_string("#{sacfly}",:light_yellow)})" if options[:verbose]
          puts (BBmetric::StatCalc.onbasepercentage(hits,walks,hbp,atbats,sacfly))\
             .round(options[:precision]) if options[:precision]
       end
@@ -220,8 +231,8 @@ module BBmetric
 
       # Method for printing with color
       no_tasks do
-         def print_colorized(message,color)
-            puts options[:color] ? "#{message}".colorize(color) : "#{message}"
+         def colorize_string(message,color)
+            options[:color] ? "#{message}".colorize(color) : "#{message}"
          end
       end
 
