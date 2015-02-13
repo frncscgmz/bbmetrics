@@ -25,6 +25,10 @@ module BBmetric
          (hits.to_f - hrs.to_f) / (atbats.to_f - ks.to_f - hrs.to_f + sacfly.to_f)
       end
 
+      def self.iso(doubles, triples, hrs, atbats)
+         ((doubles.to_f) + (2*triples.to_f) + (3*hrs.to_f)) / (atbats.to_f)
+      end
+
       def self.earnedrunaverage(runs, ip)
          9*(runs.to_f / ip.to_f)
       end

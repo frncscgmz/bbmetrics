@@ -10,6 +10,7 @@ module BBmetric
       map "-ops"     => :onbasepercentageslugging
       map "-slg"     => :slugging
       map "-babip"   => :babip
+      map "-iso"     => :isolatedpower
       map "-era"     => :earnedrunaverage
       map "-eraplus" => :earnedrunaverageplus
       map "-whip"    => :walksplushits
@@ -113,6 +114,21 @@ module BBmetric
          puts "(#{hits} - #{hrs}) / (#{atbats} - #{ks} - #{hrs} + #{sacfly})" \
             if options[:verbose]
          puts (BBmetric::StatCalc.babip(hits,walks,hrs,atbats,ks,sacfly))
+            .round(options[:precision]) if options[:precision]
+      end
+
+      # Isolated Power
+      # ((doubles) + (2*triples) + (3*HR's)) / atbats
+      option :precision, :type => :numeric, :default => 3, :aliases => '--p'
+      desc "isolatedpower -iso <doubles> <triples> <hrs> <atbats>",
+         "Isolated Power"
+      def isolatedpower(doubles, triples, hrs, atbats)
+         puts "Calculating ISO" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{doubles}) + (2*#{triples}) + (3*#{hrs}) / (#{atbats})" \
+            if options[:verbose]
+         puts (BBmetric::StatCalc.iso(doubles, triples, hrs, atbats))
             .round(options[:precision]) if options[:precision]
       end
 
