@@ -11,6 +11,7 @@ module BBmetric
       map "-slg"     => :slugging
       map "-babip"   => :babip
       map "-iso"     => :isolatedpower
+      map "-eqa"     => :equivalentaverage
       map "-era"     => :earnedrunaverage
       map "-eraplus" => :earnedrunaverageplus
       map "-whip"    => :walksplushits
@@ -129,6 +130,24 @@ module BBmetric
          puts "(#{doubles}) + (2*#{triples}) + (3*#{hrs}) / (#{atbats})" \
             if options[:verbose]
          puts (BBmetric::StatCalc.iso(doubles, triples, hrs, atbats))
+            .round(options[:precision]) if options[:precision]
+      end
+
+      # Equivalent average
+      # ((hits) + (totalbases) + 1.5 * (walks + hbp) + sb + sachits + sacfly) / 
+      # (atbats + walks + hbp + sachits + sacfly + cs + (sb/3))
+      option :precision, :type => :numeric, :default => 3, :aliases => '--p'
+      desc "equivalentaverage -eqa <hits> <totalbases> <walks> <hbp> <sb> \
+         <sachits> <sacfly> <atbats> <cs>",
+         "Equivalent average"
+      def equivalentaverage(hits, totalbases, walks, hbp, sb, sachits, sacfly, atbats, cs)
+         puts "Calculating EqA" if options[:verbose]
+         puts "Precision: #{options[:precision]}" \
+            if options[:verbose] and options[:precision]
+         puts "(#{hits} + #{totalbases} + 1.5 * (#{walks} + #{hbp} + #{\
+            sb}) + #{sachits} + #{sacfly}) / (#{atbats} + #{walks} + #{hbp} + #{\
+            sachits} + #{sacfly} + #{cs} + (#{sb}/3))" if options[:verbose]
+         puts (BBmetric::StatCalc.eqa(hits,totalbases,walks,hbp,sb,sachits,sacfly,atbats,cs))
             .round(options[:precision]) if options[:precision]
       end
 

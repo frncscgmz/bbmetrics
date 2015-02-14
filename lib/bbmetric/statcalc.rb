@@ -29,6 +29,12 @@ module BBmetric
          ((doubles.to_f) + (2*triples.to_f) + (3*hrs.to_f)) / (atbats.to_f)
       end
 
+      def self.eqa(hits,totalbases,walks,hbp,sb,sachits,sacfly,atbats,cs)
+         (hits.to_f + totalbases.to_f + 1.5 * (walks.to_f + hbp.to_f + sb.to_f) + \
+          sachits.to_f + sacfly.to_f) / (atbats.to_f + walks.to_f + \
+                           hbp.to_f + sachits.to_f + sacfly.to_f + cs.to_f + (sb.to_f/3))
+      end
+
       def self.earnedrunaverage(runs, ip)
          9*(runs.to_f / ip.to_f)
       end
