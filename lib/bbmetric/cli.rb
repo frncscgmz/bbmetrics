@@ -75,10 +75,20 @@ module BBmetric
       desc "slugging -slg <hits> <doubles> <triples> <hrs> <atbats>",
          "Slugging percentage"
       def slugging(hits, doubles, triples, hrs, atbats)
-         puts "Calculating Slugging percentage" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("Slugging percentage",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "#{hits} + 2*(#{doubles}) + 3*(#{triples}) + 4*(#{hrs}) / #{atbats}" \
+         puts "Hits: #{colorize_string("#{hits}",:green)} Doubles: #{
+            colorize_string("#{doubles}",:red)} Triples: #{
+            colorize_string("#{triples}",:magenta)} At-Bats: #{
+            colorize_string("#{atbats}",:cyan)} Home-Runs: #{
+            colorize_string("#{hrs}",:light_yellow)}" if options[:verbose]
+
+         puts "#{colorize_string("#{hits}",:green)} + 2*(#{colorize_string("#{\
+            doubles}",:red)}) + 3*(#{colorize_string("#{triples}",:magenta)\
+            }) + 4*(#{colorize_string("#{hrs}",:light_yellow)}) / #{\
+            colorize_string("#{atbats}",:cyan)}" \
             if options[:verbose]
          puts (BBmetric::StatCalc.slugging(hits,doubles,triples,hrs,atbats))\
             .round(options[:precision]) if options[:precision]
