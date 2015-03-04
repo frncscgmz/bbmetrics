@@ -98,16 +98,33 @@ module BBmetric
       # (atbats * (hits + walks + hbp) + bases * (atbats + walks + sacfly + 
       # hbp)) / (atbats * (atbats + walks + sacfly + hbp))
       option :precision, :type => :numeric, :default => 3, :aliases => '--p'
-      desc "onbasepercentageslugging -slg <hits> <doubles> <triples> <hrs> <atbats>",
+      desc "onbasepercentageslugging -slg <atbats> <hits> <walks> <hbp> <bases> <sacfly>",
          "On-Base percentage plus Slugging"
       def onbasepercentageslugging(atbats, hits, walks, hbp, bases, sacfly)
-         puts "Calculating On-Base percentage plus Slugging" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
-            if options[:verbose] and options[:precision]
-         puts "(#{atbats} * (#{hits} + #{walks} + #{hbp}) + #{\
-            bases} * (#{atbats} + #{walks} + #{sacfly} + #{\
-            hbp})) / (#{atbats} * (#{atbats} + #{walks} + #{sacfly} + #{hbp}))"\
+         puts "Calculating #{colorize_string("On-Base percentage plus Slugging",:blue)}" \
             if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
+            if options[:verbose] and options[:precision]
+
+         puts "At-Bats: #{colorize_string("#{atbats}",:green)} Hits: #{
+            colorize_string("#{hits}",:red)} Walks: #{
+            colorize_string("#{walks}",:magenta)} Hit By Pitches: #{
+            colorize_string("#{hbp}",:cyan)} Bases: #{
+            colorize_string("#{bases}",:light_yellow)} Sacrifice Flys: #{
+            colorize_string("#{sacfly}",:light_green)}" if options[:verbose]
+
+         puts "(#{colorize_string("#{atbats}",:green)} * (#{colorize_string("#{
+            hits}",:red)} + #{colorize_string("#{walks}",:magenta)} + #{
+            colorize_string("#{hbp}",:cyan)} + #{colorize_string("#{
+            bases}",:light_yellow)} * (#{colorize_string("#{atbats}",:green)} + #{
+            colorize_string("#{walks}",:magenta)} + #{colorize_string("#{
+            sacfly}",:light_green)} + #{colorize_string("#{hbp}",:cyan)})) / (#{
+            colorize_string("#{atbats}",:green)} * (#{colorize_string("#{
+            atbats}",:green)} + #{colorize_string("#{walks}",:magenta)} + #{
+            colorize_string("#{sacfly}",:light_green)} + #{colorize_string("#{
+            hbp}",:cyan)}))"\
+            if options[:verbose]
+
          puts (BBmetric::StatCalc.onbasepercentageslugging(\
             atbats,hits,walks,hbp,bases,sacfly))\
             .round(options[:precision]) if options[:precision]
