@@ -136,10 +136,22 @@ module BBmetric
       desc "babip -babip <hits> <walks> <hrs> <atbats> <ks> <sacfly>",
          "Batting average on balls in play"
       def babip(hits, walks, hrs, atbats, ks, sacfly)
-         puts "Calculating BABIP" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("BABIP",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{hits} - #{hrs}) / (#{atbats} - #{ks} - #{hrs} + #{sacfly})" \
+
+         puts "Hits: #{colorize_string("#{hits}",:green)} Walks: #{
+            colorize_string("#{walks}",:red)} Home-Runs: #{
+            colorize_string("#{hrs}",:magenta)} At-Bats: #{
+            colorize_string("#{atbats}",:cyan)} Strike-Outs: #{
+            colorize_string("#{ks}",:light_yellow)} Sacrifice Flys: #{
+            colorize_string("#{sacfly}",:light_green)}" if options[:verbose]
+
+         puts "(#{colorize_string("#{hits}",:green)} - #{colorize_string("#{hrs}"\
+            ,:magenta)}) / (#{colorize_string("#{atbats}",:cyan)} - #{
+            colorize_string("#{ks}",:light_yellow)} - #{colorize_string(\
+            "#{hrs}",:magenta)} + #{colorize_string("#{sacfly}",:light_green)})" \
             if options[:verbose]
          puts (BBmetric::StatCalc.babip(hits,walks,hrs,atbats,ks,sacfly))
             .round(options[:precision]) if options[:precision]
