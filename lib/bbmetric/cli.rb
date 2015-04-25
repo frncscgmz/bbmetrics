@@ -163,11 +163,19 @@ module BBmetric
       desc "isolatedpower -iso <doubles> <triples> <hrs> <atbats>",
          "Isolated Power"
       def isolatedpower(doubles, triples, hrs, atbats)
-         puts "Calculating ISO" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
-            if options[:verbose] and options[:precision]
-         puts "(#{doubles}) + (2*#{triples}) + (3*#{hrs}) / (#{atbats})" \
+         puts "Calculating #{colorize_string("ISO",:blue)}" \
             if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
+            if options[:verbose] and options[:precision]
+
+         puts "Doubles: #{colorize_string("#{doubles}",:green)} Triples:: #{
+            colorize_string("#{triples}",:red)} Home-Runs: #{
+            colorize_string("#{hrs}",:magenta)} At-Bats: #{
+            colorize_string("#{atbats}",:cyan)}" if options[:verbose]
+
+         puts "(#{colorize_string("#{doubles}",:green)}) + (2*#{colorize_string(\
+            "#{triples}",:red)}) + (3*#{colorize_string("#{hrs}",:magenta)}) / (#{\
+            colorize_string("#{atbats}",:cyan)})" if options[:verbose]
          puts (BBmetric::StatCalc.iso(doubles, triples, hrs, atbats))
             .round(options[:precision]) if options[:precision]
       end
@@ -180,12 +188,35 @@ module BBmetric
          <sachits> <sacfly> <atbats> <cs>",
          "Equivalent average"
       def equivalentaverage(hits, totalbases, walks, hbp, sb, sachits, sacfly, atbats, cs)
-         puts "Calculating EqA" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("EqA",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{hits} + #{totalbases} + 1.5 * (#{walks} + #{hbp} + #{\
-            sb}) + #{sachits} + #{sacfly}) / (#{atbats} + #{walks} + #{hbp} + #{\
-            sachits} + #{sacfly} + #{cs} + (#{sb}/3))" if options[:verbose]
+
+        puts "Hits: #{colorize_string("#{hits}",:green)} "\
+            "Total Bases: #{colorize_string("#{totalbases}",:red)} "\
+            "Walks: #{colorize_string("#{walks}",:magenta)} "\
+            "Hit By Pitch: #{colorize_string("#{hbp}",:light_red)} "\
+            "Sacrifice Bunts: #{colorize_string("#{sb}",:cyan)} "\
+            "Sacrifice Hits: #{colorize_string("#{sachits}",:light_black)} "\
+            "Sacrifice Flys: #{colorize_string("#{sacfly}",:light_yellow)} "\
+            "At-Bats: #{colorize_string("#{atbats}",:light_green)}"\
+            if options[:verbose]
+
+         puts "(#{colorize_string("#{hits}",:green)} + "\
+            "#{colorize_string("#{totalbases}",:red)} + 1.5 * "\
+            "(#{colorize_string("#{walks}",:magenta)} + "\
+            "#{colorize_string("#{hbp}",:light_red)} + "\
+            "#{colorize_string("#{sb}",:cyan)}) + "\
+            "#{colorize_string("#{sachits}",:light_black)} + "\
+            "#{colorize_string("#{sacfly}",:light_yellow)}) / "\
+            "(#{colorize_string("#{atbats}",:light_green)} + "\
+            "#{colorize_string("#{walks}",:magenta)} + "\
+            "#{colorize_string("#{hbp}",:light_red)} + "\
+            "#{colorize_string("#{sachits}",:light_black)} + "\
+            "#{colorize_string("#{sacfly}",:light_yellow)} + "\
+            "#{cs} + (#{colorize_string("#{sb}",:cyan)}/3))" \
+            if options[:verbose]
          puts (BBmetric::StatCalc.eqa(hits,totalbases,walks,hbp,sb,sachits,sacfly,atbats,cs))
             .round(options[:precision]) if options[:precision]
       end
@@ -199,10 +230,16 @@ module BBmetric
       desc "earnedrunaverage -era <runs> <ip>",
          "Earned run average"
       def earnedrunaverage(runs, ip)
-         puts "Calculating ERA" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("ERA",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "9*(#{runs} / #{ip})" if options[:verbose]
+
+        puts "Runs: #{colorize_string("#{runs}",:green)} Innings Pitched: #{
+            colorize_string("#{ip}",:red)}"
+
+         puts "9*(#{colorize_string("#{runs}",:green)} / #{colorize_string("#{
+            ip}",:red)})" if options[:verbose]
          puts (BBmetric::StatCalc.earnedrunaverage(runs,ip))
             .round(options[:precision]) if options[:precision]
       end
@@ -213,10 +250,19 @@ module BBmetric
       desc "earnedrunaverageplus -eraplus <runs> <ip> <lgera>",
          "Earned run average adjusted to player's ballpark(s)"
       def earnedrunaverageplus(runs, ip, lgera)
-         puts "Calculating ERA+" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("ERA+",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "100 * (#{lgera}/(9 * (#{runs} / #{ip})))" \
+
+         puts "Runs: #{colorize_string("#{runs}",:green)} "\
+            "Innings Pitched: #{colorize_string("#{ip}",:red)} "\
+            "League Average ERA: #{colorize_string("#{lgera}",:magenta)}"\
+            if options[:verbose] 
+
+         puts "100 * (#{colorize_string("#{lgera}",:magenta)}/("\
+            "9 * (#{colorize_string("#{runs}",:green)} / "\
+            "#{colorize_string("#{ip}",:red)})))"\
             if options[:verbose]
          puts (BBmetric::StatCalc.earnedrunaverageplus(runs,ip,lgera))  
             .round(options[:precision]) if options[:precision]
@@ -228,10 +274,20 @@ module BBmetric
       desc "walksplushits -whip <walks> <hits> <ip>",
          "Walks and hits per inning pitched"
       def walksplushits(walks, hits, ip)
-         puts "Calculating WHIP" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("WHIP",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{walks} + #{hits}) / #{ip}" if options[:verbose]
+
+         puts "Walks: #{colorize_string("#{walks}",:green)} "\
+            "Hits: #{colorize_string("#{hits}",:red)} "\
+            "Innings Pitched: #{colorize_string("#{ip}",:magenta)}"\
+            if options[:verbose] 
+         
+         puts "(#{colorize_string("#{walks}",:green)} + "\
+            "#{colorize_string("#{hits}",:red)}) / "\
+            "#{colorize_string("#{ip}",:magenta)}" \
+            if options[:verbose]
          puts (BBmetric::StatCalc.walksplushits(walks,hits,ip))
             .round(options[:precision]) if options[:precision]
       end
@@ -251,11 +307,21 @@ module BBmetric
       desc "fieldingpercentage -fp <putouts> <assists> <errors>",
          "Fielding percentage"
       def fieldingpercentage(putouts, assists ,errors)
-         puts "Calculating Fielding percentage" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("Fielding percentage",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{putouts} + #{assists}) / (#{putouts} + #{\
-            assists} + #{errors})" if options[:verbose]
+
+        puts "Put-Outs: #{colorize_string("#{putouts}",:green)} "\
+            "Assists: #{colorize_string("#{assists}",:red)} "\
+            "Errors: #{colorize_string("#{errors}",:magenta)}"
+
+         puts "(#{colorize_string("#{putouts}",:green)} + "\
+            "#{colorize_string("#{assists}",:red)} / "\
+            "(#{colorize_string("#{putouts}",:green)} + "\
+            "#{colorize_string("#{assists}",:red)} + "\
+            "#{colorize_string("#{errors}",:magenta)})" \
+            if options[:verbose]
          puts (BBmetric::StatCalc.fieldingpercentage(putouts,assists,errors))
             .round(options[:precision]) if options[:precision]
       end
@@ -266,10 +332,19 @@ module BBmetric
       desc "rangefactor -rf <assists> <putouts> <games>",
          "Range factor"
       def rangefactor(putouts, assists ,games)
-         puts "Calculating Range factor" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string("Range factor",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{assists} + #{putouts}) / #{games}" if options[:verbose]
+
+        puts "Put-Outs: #{colorize_string("#{putouts}",:green)} "\
+            "Assists: #{colorize_string("#{assists}",:red)} "\
+            "Games: #{colorize_string("#{games}",:magenta)}"
+
+         puts "(#{colorize_string("#{assists}",:red)} + "\
+            "#{colorize_string("#{putouts}",:green)}) / "\
+            "#{colorize_string("#{games}",:magenta)}"\
+            if options[:verbose]
          puts (BBmetric::StatCalc.rangefactor(putouts,assists,games))
             .round(options[:precision]) if options[:precision]
       end
@@ -283,11 +358,19 @@ module BBmetric
       desc "pythagoreanexpectationformula -pye <runsscored> <runsallowed>",
          "Bill James Pythagorean expectation formula"
       def pythagoreanexpectationformula(runsscored, runsallowed)
-         puts "Calculating Bill James Pythagorean expectation" if options[:verbose]
-         puts "Precision: #{options[:precision]}" \
+         puts "Calculating #{colorize_string(
+            "Bill James Pythagorean expectation",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
             if options[:verbose] and options[:precision]
-         puts "(#{runsscored}^1.83) / (#{runsscored}^1.83 + #{\
-            runsallowed}^1.83)" if options[:verbose]
+
+         puts "Runs scored: #{colorize_string("#{runsscored}",:green)} "\
+            "Runs allowed: #{colorize_string("#{runsallowed}",:red)})"
+
+         puts "(#{colorize_string("#{runsscored}",:green)}^1.83) / "\
+            "(#{colorize_string("#{runsscored}",:green)}^1.83 + "\
+            "#{colorize_string("#{runsallowed}",:red)}^1.83)" \
+            if options[:verbose]
          puts (BBmetric::StatCalc.pythagoreanexpectationformula(\
             runsscored, runsallowed))
             .round(options[:precision]) if options[:precision]
