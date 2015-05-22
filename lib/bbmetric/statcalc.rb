@@ -47,6 +47,10 @@ module BBmetric
          (walks.to_f + hits.to_f) / ip.to_f
       end
 
+      def self.fieldingindependentpitching(hrs,walks,hbp,ks,ip,cfip)
+         ((13*hrs.to_f+3*(walks.to_f+hbp.to_f))-2*ks.to_f)/ip.to_f + cfip.to_f
+      end
+
       def self.fieldingpercentage(putouts, assists ,errors)
          (putouts.to_f + assists.to_f) / (putouts.to_f + \
             assists.to_f + errors.to_f)

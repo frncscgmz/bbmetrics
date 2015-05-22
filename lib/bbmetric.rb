@@ -62,6 +62,11 @@ class BBMetric
          .round(precision) if precision
    end
 
+   def fieldingindependentpitching(hrs, walks, hbp, ks, ip, cfip)
+      (BBmetric::StatCalc.fieldingindependentpitching(hrs,walks,hbp,ks,ip,cfip))
+         .round(precision) if precision
+   end
+
    def fieldingpercentage(putouts, assists ,errors)
       (BBmetric::StatCalc.fieldingpercentage(putouts,assists,errors))
          .round(precision) if precision

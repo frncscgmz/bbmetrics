@@ -15,6 +15,7 @@ module BBmetric
       map "-era"     => :earnedrunaverage
       map "-eraplus" => :earnedrunaverageplus
       map "-whip"    => :walksplushits
+      map "-fip"     => :fieldingindependentpitching
       map "-fp"      => :fieldingpercentage
       map "-rf"      => :rangefactor
       map "-pye"     => :pythagoreanexpectationformula
@@ -292,8 +293,36 @@ module BBmetric
             .round(options[:precision]) if options[:precision]
       end
 
-      #def fieldingindependentpitching(hrs,walks,ks,ip)
-      #end
+      # Fielding-independent pitching
+      # (13 * HR + 3 * (Walks +HBP) - 2 * K)/IP + FIP constant
+      option :precision, :type => :numeric, :default => 3, :aliases => '--p'
+      desc "fieldingindependentpitching -fip <hrs> <walks> <hbp> <ks> <ip> <cfip>",
+         "Fielding independent pitching"
+      def fieldingindependentpitching(hrs,walks,hbp,ks,ip,cfip)
+         puts "Calculating #{colorize_string("FIP",:blue)}" \
+            if options[:verbose]
+         puts "Precision: #{colorize_string("#{options[:precision]}",:yellow)}" \
+            if options[:verbose] and options[:precision]
+
+        puts "Home-Runs: #{colorize_string("#{hrs}",:green)} Walks: "\
+            "#{colorize_string("#{walks}",:red)} Hit By Pitch: "\
+            "#{colorize_string("#{hbp}",:magenta)} Strikeouts: "\
+            "#{colorize_string("#{ks}",:cyan)} Innings pitched: "\
+            "#{colorize_string("#{ip}",:light_red)} FIP Constat: "\
+            "#{colorize_string("#{cfip}",:light_black)}" if options[:verbose] 
+
+         puts "((13*#{colorize_string("#{hrs}",:green)}+3*"\
+            "(#{colorize_string("#{walks}",:red)}+"\
+            "#{colorize_string("#{hbp}",:magenta)}))-2*"\
+            "#{colorize_string("#{ks}",:cyan)})/"\
+            "#{colorize_string("#{ip}",:light_red)} + "\
+            "#{colorize_string("#{cfip}",:light_black)}"\
+            if options[:verbose] 
+
+         puts (BBmetric::StatCalc.fieldingindependentpitching(
+            hrs,walks,hbp,ks,ip,cfip)).round(options[:precision]) \
+            if options[:precision]
+      end
 
       #def defenseindependentcomponentera(hrs,walks,hbp,ks,ip)
       #end
